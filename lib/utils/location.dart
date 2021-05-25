@@ -29,7 +29,7 @@ class CustomLocation{
   }
 
   _locationData = await location.getLocation();
-
+return _locationData;
 }
 
 

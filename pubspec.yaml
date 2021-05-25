@@ -44,6 +44,7 @@ dependencies:
   location: ^4.1.1
   image_picker: ^0.7.5+2
   permission_handler: ^8.0.0+2
+  http: ^0.13.3
 
 
 
@@ -68,6 +69,7 @@ flutter:
     - assets/
     - assets/svgs/
     - assets/pngs/
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

@@ -40,18 +40,18 @@ class UserModel {
       this.pstatus});
 
   UserModel.fromJson(dynamic json) {
-    caseId = json["case_id"];
-    addressCheckId = json["address_check_id"];
-    applicant = json["applicant"];
-    phoneno = json["phoneno"];
-    dob = json["dob"];
-    fatherName = json["father_name"];
-    addressDetail = json["address_detail"];
-    durationOfStay = json["duration_of_stay"];
-    vstatus = json["vstatus"];
-    dateAdded = json["date_added"];
-    portalno = json["portalno"];
-    pstatus = json["pstatus"];
+    caseId = json["case_id"]??"";
+    addressCheckId = json["address_check_id"]??"";
+    applicant = json["applicant"]??"";
+    phoneno = json["phoneno"]??"";
+    dob = json["dob"]??"";
+    fatherName = json["father_name"]??"";
+    addressDetail = json["address_detail"]??"";
+    durationOfStay = json["duration_of_stay"]??"";
+    vstatus = json["vstatus"]??"";
+    dateAdded = json["date_added"]??"";
+    portalno = json["portalno"]??"";
+    pstatus = json["pstatus"]??"";
   }
 
   Map<String, dynamic> toJson() {

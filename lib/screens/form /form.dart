@@ -1,4 +1,6 @@
+import 'package:asdintech/globals/constants.dart';
 import 'package:asdintech/providers/bg_verification_provider.dart';
+import 'package:asdintech/widgets/button/gradient_button.dart';
 import 'package:asdintech/widgets/drop_down/drop_down_text_field.dart';
 import 'package:asdintech/widgets/drop_down/drop_down_text_field2.dart';
 import 'package:asdintech/widgets/textbox/multiTextInput.dart';
@@ -30,11 +32,18 @@ class _FormDataScreenState extends State<FormDataScreen> {
 
   String _category = "";
 
+
+  @override
+  void didChangeDependencies() {
+    ShowPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<BgVerificationProvider>(context);
-  //  provider.setUpUserData("p226816");
-    provider.showPermissiondialog(context);
+    provider.context=context;
+    //  provider.setUpUserData("p226816");
+
     return Scaffold(
       appBar: AppBar(),
       body: Consumer<BgVerificationProvider>(builder: (context, value, child) {
@@ -51,7 +60,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               MultiLineTextInput(
                 controller: provider.fullname,
-                m_hintText: "hint",
+                m_hintText: "Enter Details Here",
                 m_helperText: "",
                 m_labelText: "Full Name",
                 icon: Icons.person_rounded,
@@ -62,7 +71,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               MultiLineTextInput(
                 controller: provider.phno1,
-                m_hintText: "hint",
+                m_hintText: "Enter Details Here",
                 m_helperText: "*Required",
                 m_labelText: "Phone Number",
                 icon: Icons.phone,
@@ -73,7 +82,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               MultiLineTextInput(
                 controller: provider.phno2,
-                m_hintText: "hint",
+                m_hintText: "Enter Details Here",
                 m_helperText: "",
                 m_labelText: "Phone Number 2",
                 icon: Icons.phone,
@@ -88,18 +97,18 @@ class _FormDataScreenState extends State<FormDataScreen> {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   DateTime? picked = await showDatePicker(
                     context: context,
-                    firstDate: DateTime(2021, 05, 2, 00, 00, 00, 00, 00),
+                    firstDate: DateTime(1950, 05, 2, 00, 00, 00, 00, 00),
                     initialDate: DateTime.now(),
                     lastDate: DateTime.now(),
                   );
                   if (picked != null && picked != date) {
-                   provider.setDateOfBirth(picked);
+                    provider.setDateOfBirth(picked);
                   }
                 },
                 child: AbsorbPointer(
                   child: MultiLineTextInput(
                     controller: provider.dob,
-                    m_hintText: "hint",
+                    m_hintText: "Enter Details Here",
                     m_helperText: "",
                     m_labelText: "Date of Birth",
                     icon: Icons.calendar_today,
@@ -111,7 +120,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               MultiLineTextInput(
                 controller: provider.father_name,
-                m_hintText: "hint",
+                m_hintText: "Enter Details Here",
                 m_helperText: "",
                 m_labelText: "Father Name",
                 icon: Icons.person_rounded,
@@ -122,7 +131,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
                 height: 15,
               ),
               MultiLineTextInput(
-                controller: first_name,
+                controller: value.permanent_address,
                 m_hintText: "",
                 m_helperText: "",
                 m_labelText: "Permanent Address",
@@ -156,7 +165,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               MultiLineTextInput(
                 isenable: valuefirst,
-                controller: first_name,
+                controller: value.address_duration,
                 m_hintText: "Permanent Address",
                 m_helperText: "*Required",
                 m_labelText: "Address Duration",
@@ -177,7 +186,9 @@ class _FormDataScreenState extends State<FormDataScreen> {
                 selected: null,
                 m_labelText: " Address Type",
                 items: categories,
-                onselected: (string) {},
+                onselected: (string) {
+                  value.address_type.text = string;
+                },
               ),
 
               SizedBox(
@@ -187,7 +198,12 @@ class _FormDataScreenState extends State<FormDataScreen> {
               SizedBox(
                 height: 10,
               ),
-              _getReferenceGroup(onselected: (str) {}),
+              _getReferenceGroup(
+                  refname: value.ref_name_1,
+                  refphno: value.ref_phno_1,
+                  onselected: (str) {
+                    value.ref_relationship_1.text = str;
+                  }),
               SizedBox(
                 height: 10,
               ),
@@ -195,7 +211,12 @@ class _FormDataScreenState extends State<FormDataScreen> {
               SizedBox(
                 height: 10,
               ),
-              _getReferenceGroup(onselected: (str) {}),
+              _getReferenceGroup(
+                  refname: value.ref_name_2,
+                  refphno: value.ref_phno_2,
+                  onselected: (str) {
+                    value.ref_relationship_2.text = str;
+                  }),
               SizedBox(
                 height: 10,
               ),
@@ -230,6 +251,15 @@ class _FormDataScreenState extends State<FormDataScreen> {
               ),
               _getCameraBox("Authentic Signature",
                   indicator: value.signature!, identity: idenenties.signature),
+            SizedBox(height: 50,),
+              Padding(
+                padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.25),
+
+                child: GradientButton(onpress: (){
+                  value.submitForm();
+                },text: "Submit",),
+              ),
+              SizedBox(height: 50,),
             ],
           ),
         );
@@ -246,6 +276,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
       child: Column(
         children: [
           MultiLineTextInput(
+            controller: refname,
             m_labelText: "Reference Name",
           ),
           SizedBox(
@@ -255,6 +286,7 @@ class _FormDataScreenState extends State<FormDataScreen> {
             children: [
               Expanded(
                 child: MultiLineTextInput(
+                  controller: refphno,
                   m_labelText: "Phone Number",
                 ),
                 flex: 5,
@@ -329,7 +361,11 @@ class _FormDataScreenState extends State<FormDataScreen> {
                       color: Colors.white,
                       size: 35,
                     )),
-                  ))
+                  )),
+              SizedBox(height: 40,),
+
+
+
             ],
           ),
         ),

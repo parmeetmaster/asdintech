@@ -16,7 +16,7 @@ class Api {
     dio = Dio(BaseOptions())
       ..interceptors.add(PrettyDioLogger(
           requestHeader: true,
-          //  requestBody: true,
+           requestBody: true,
           responseBody: true,
           responseHeader: true,
           request: true,
@@ -43,6 +43,7 @@ Dio dio1= await Api()
         .getInstance();
 dio1.options.headers['content-Type'] = 'application/json';
       Response response=await  dio1.get("https://asdintech.com/webapi/api/android/$id");
+
     return UserModel.fromJson(response.data[0]);
   }
 }

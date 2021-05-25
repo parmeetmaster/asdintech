@@ -12,28 +12,53 @@ class FormIdScreen extends StatefulWidget {
 
 class _FormIdScreenState extends State<FormIdScreen> {
   TextEditingController controller = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    controller.text="p226816";
+    controller.text = "p226816";
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Fill form by Id"),
-      ),
-      body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.2),
-            child: MultiLineTextInput(controller: controller,m_labelText: "Please Enter Id",),
+      backgroundColor: Colors.black26,
+      body: Center(
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          width: MediaQuery.of(context).size.width * .8,
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Text(
+                  "Enter Reference Number",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                MultiLineTextInput(
+                  controller: controller,
+                  m_labelText: "Enter Reference No",
+                  m_helperText: "At end of link number like P153771",
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * .2),
+                  child: GradientButton(
+                    text: "Submit",
+                    onpress: () {
+                      BgVerificationProvider()
+                          .getinstance(context)
+                          .setUpUserData(controller.text, context);
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
-          SizedBox(height: 20,),
-          Padding(
-            padding:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*.2),
-            child: GradientButton(text: "Submit Id",onpress: (){
-              BgVerificationProvider().getinstance(context).setUpUserData(controller.text,context);
-            },),
-          )
-        ],
+        ),
       ),
     );
   }
